@@ -49,6 +49,8 @@ hosts_copied = 'N'
 apache_mod_rpaf = 'N'
 custom_script_migrated = 'N'
 cron_migrated = 'N'
+fw_rules_migrated = 'N'
+fw_rules_applied = 'N'
 
 `ps auxww`.each do |process|
   if process =~ /nginx: worker/
@@ -92,6 +94,8 @@ cron_migrated = 'Y' if `crontab -l` =~ /custom_script.sh/
 end
 
 custom_script_migrated = 'Y' if File.exists?('/usr/local/bin/custom_script.sh')
+fw_rules_migrated = 'Y' if File.exists?('/etc/sysconfig/iptables') && (`grep '10.15.252.102/32 -j ACCEPT' /etc/sysconfig/iptables` && $? == 0)
+fw_rules_applied = 'Y' if `iptables -L -n|grep 'ACCEPT     all  --  10.15.252.102'` && $? == 0
 
 
 if File.exists?('/var/lib/mysql/serverstack/wp_posts.MYD')
@@ -141,6 +145,10 @@ PHP (eaccelartor)
 Mail
 [#{postfix_run}] Running
 [#{emails_copied}] Verified Config Emails Copied
+
+Firewall
+[#{fw_rules_migrated}] Firewall rules migrated
+[#{fw_rules_applied}] Firewall rules applied
 
 3. Content and Users
 [#{user_migrated}] Users migrated preserving permissions and UIDs and passwds
