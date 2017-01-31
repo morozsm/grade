@@ -46,6 +46,7 @@ user_migrated = 'N'
 group_migrated = 'N'
 copy_perms = 'N'
 hosts_copied = 'N'
+apache_run = 'N'
 apache_mod_rpaf = 'N'
 custom_script_migrated = 'N'
 cron_migrated = 'N'
@@ -67,6 +68,7 @@ fw_rules_applied = 'N'
     end
   end
 
+  apache_run = 'Y' if process =~ /httpd/
   proftpd_run = 'Y' if process =~ /proftpd/
   cyrus_run = 'Y' if process =~ /cyrus-master/
   nrpe_run = 'Y' if process =~ /nrpe/
@@ -128,6 +130,7 @@ Nginx
 [#{nginx_correct_user}] Running under correct user
 
 Apache
+[#{apache_run}] Is apache running?
 [#{apache_mod_rpaf}] mod_rpaf installed?
 
 MySQLD
