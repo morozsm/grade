@@ -52,6 +52,15 @@ custom_script_migrated = 'N'
 cron_migrated = 'N'
 fw_rules_migrated = 'N'
 fw_rules_applied = 'N'
+website_loads = 'N'
+internal_page_loads = 'N'
+
+
+if `rpm -qa| grep nagios-plugins-http` && $? == 0
+  `yum install -y -q nagios-plugins-http`
+end
+website_loads = 'Y' if `/usr/lib64/nagios/plugins/check_http -H blog.serverstack.com -I 127.0.0.1 -r 'WordPress 4\.7\.2'` =~ /HTTP OK/
+internal_page_loads = 'Y' if `/usr/lib64/nagios/plugins/check_http -H blog.serverstack.com -I 127.0.0.1 -u /2013/02/11/automatic-wordpress-updates-using-ftpftps-or-ssh/ -r 'THIS IS HORRIBLE SECURITY PRACTICE!'` =~ /HTTP OK/
 
 `ps auxww`.each do |process|
   if process =~ /nginx: worker/
@@ -90,6 +99,10 @@ copy_perms = 'Y' if `ls -l /home/serverstack/blog.serverstack.com/public_html/wp
 hosts_copied = 'Y' if `grep 'db.origin-2.0' /etc/hosts` && $? == 0
 apache_mod_rpaf = 'Y' if `httpd -M|grep rpaf_module` =~ /rpaf_module/
 cron_migrated = 'Y' if `crontab -l` =~ /custom_script.sh/
+
+if hosts_copied == 'N'
+  `echo "127.0.0.1 blog.serverstack.com" >> /etc/hosts"`
+end
 
 `php -v`.each do |phpline|
   eaccel = 'Y' if phpline =~ /eAccelerator/
@@ -162,9 +175,9 @@ Firewall
 [#{cron_migrated}] Cron job migrated
 
 4. Sanity Checks
-[ ] Website loads
+[#{website_loads}] Website loads
 [ ] Content looks correct
-[ ] Subpages work
+[#{internal_page_loads}  Subpages work
 
 Details:
 REPORT
