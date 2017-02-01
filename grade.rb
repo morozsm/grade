@@ -2,19 +2,13 @@
 
 require 'optparse'
 require 'net/ftp'
-<<<<<<< HEAD
 require 'net/pop'
 require 'net/smtp'
-=======
->>>>>>> b797bd37d0ea1d06b95ac981aa8b686d7a334ec7
 
 # Set some variables
 ftp_login = 'serverstack'
 ftp_password = 'tuTfsi7AFasMpWaa'
-<<<<<<< HEAD
 imap_password = 'testpassword'
-=======
->>>>>>> b797bd37d0ea1d06b95ac981aa8b686d7a334ec7
 
 target = nil
 
@@ -81,16 +75,12 @@ fw_rules_applied = 'N'
 website_loads = 'N'
 internal_page_loads = 'N'
 ftp_logins = 'N'
-<<<<<<< HEAD
 wp_panel_login = 'N'
-=======
->>>>>>> b797bd37d0ea1d06b95ac981aa8b686d7a334ec7
 
 ftp = Net::FTP.new('localhost')
 ftp_logins = 'Y' if ftp.login(ftp_login, ftp_password)
 ftp.close
 
-<<<<<<< HEAD
 begin
  pop_can_login = 'Y' if  !Net::POP3.auth_only('localhost', 110,
                     'support@serverstack.com', 'testpassword')
@@ -111,9 +101,6 @@ if pop_can_login == 'Y' then
   end
  end
 end
-=======
-
->>>>>>> b797bd37d0ea1d06b95ac981aa8b686d7a334ec7
 
 if `rpm -qa| grep nagios-plugins-http` && $? == 0
   `yum install -y -q nagios-plugins-http`
@@ -151,7 +138,6 @@ php_config = 'Y' if `rpm -qa|grep php` && $? == 0
 mysql_config = 'Y' if `grep "max_heap_table_size = 8192M" /etc/my.cnf` && $? == 0
 mycnf = 'Y' if `grep "password=ScRHmCv8YxKN" /root/.my.cnf` && $? == 0
 mycnf_perms = "Y" if `stat -c %a /root/.my.cnf` =~ /600/
-<<<<<<< HEAD
 mailbox_migrated = 'Y' if (`grep 'support@serverstack.com' /etc/postfix/virtual` && $? == 0) && (`sasldblistusers2 |grep support@serverstack.com` && $? == 0)
 user_migrated = 'Y' if `grep 'serverstack:x:500' /etc/passwd` && $? == 0
 group_migrated = 'Y' if `grep 'serverstack:x:500' /etc/group` && $? == 0
@@ -165,16 +151,6 @@ cron_migrated = 'Y' if `crontab -l` =~ /custom_script.sh/
 wp_panel_login = 'Y' if `curl -L -D cookie2.txt -b cookie2.txt -d "log=admin&pwd=5lcnpgGOqO1m4j*whOcV9kKO&testcookie=1&rememberme=forever" http://blog.serverstack.com/wp-login.php|grep dashboard_activity` && $? == 0
 
 
-=======
-emails_copied = 'Y' if (`grep 'support@serverstack.com' /etc/postfix/virtual` && $? == 0) && (`sasldblistusers2 |grep support@serverstack.com` && $? == 0)
-user_migrated = 'Y' if `grep 'serverstack:x:500' /etc/passwd` && $? == 0
-group_migrated = 'Y' if `grep 'serverstack:x:500' /etc/group` && $? == 0
-copy_perms = 'Y' if `ls -l /home/serverstack/blog.serverstack.com/public_html/wp-config.php` =~ /-rw-r--r-- 1 serverstack serverstack/
-hosts_copied = 'Y' if `grep 'db.origin-2.0' /etc/hosts` && $? == 0
-apache_mod_rpaf = 'Y' if `httpd -M|grep rpaf_module` =~ /rpaf_module/
-cron_migrated = 'Y' if `crontab -l` =~ /custom_script.sh/
-
->>>>>>> b797bd37d0ea1d06b95ac981aa8b686d7a334ec7
 if hosts_copied == 'N'
   `echo "127.0.0.1 blog.serverstack.com" >> /etc/hosts"`
 end
@@ -248,10 +224,6 @@ Firewall
 [#{fw_rules_migrated}] Firewall rules migrated
 [#{fw_rules_applied}] Firewall rules applied
 
-Firewall
-[#{fw_rules_migrated}] Firewall rules migrated
-[#{fw_rules_applied}] Firewall rules applied
-
 3. Content and Users
 [#{user_migrated}] Users migrated preserving permissions and UIDs and passwds
 [#{group_migrated}] Groups migrated preserving permissions and GIDs
@@ -262,10 +234,7 @@ Firewall
 
 4. Sanity Checks
 [#{website_loads}] Website loads
-<<<<<<< HEAD
 [#{wp_panel_login}] Wordpress Panel Login
-=======
->>>>>>> b797bd37d0ea1d06b95ac981aa8b686d7a334ec7
 [ ] Content looks correct
 [#{internal_page_loads}] Subpages work
 
