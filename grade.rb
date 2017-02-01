@@ -1,6 +1,11 @@
 #!/usr/bin/ruby
 
 require 'optparse'
+require 'net/ftp'
+
+# Set some variables
+ftp_login = 'serverstack'
+ftp_password = 'tuTfsi7AFasMpWaa'
 
 target = nil
 
@@ -54,6 +59,12 @@ fw_rules_migrated = 'N'
 fw_rules_applied = 'N'
 website_loads = 'N'
 internal_page_loads = 'N'
+ftp_logins = 'N'
+
+ftp = Net::FTP.new('localhost')
+ftp_logins = 'Y' if ftp.login(ftp_login, ftp_password)
+ftp.close
+
 
 
 if `rpm -qa| grep nagios-plugins-http` && $? == 0
@@ -90,7 +101,7 @@ end
 
 php_config = 'Y' if `rpm -qa|grep php` && $? == 0
 mysql_config = 'Y' if `grep "max_heap_table_size = 8192M" /etc/my.cnf` && $? == 0
-mycnf = 'Y' if `grep "password=8euhzKrkq2" /root/.my.cnf` && $? == 0
+mycnf = 'Y' if `grep "password=ScRHmCv8YxKN" /root/.my.cnf` && $? == 0
 mycnf_perms = "Y" if `stat -c %a /root/.my.cnf` =~ /600/
 emails_copied = 'Y' if (`grep 'support@serverstack.com' /etc/postfix/virtual` && $? == 0) && (`sasldblistusers2 |grep support@serverstack.com` && $? == 0)
 user_migrated = 'Y' if `grep 'serverstack:x:500' /etc/passwd` && $? == 0
@@ -138,6 +149,9 @@ Migration Checklist
 
 2. Major service verification
 
+Ftp
+[#{ftp_logins}] Ftp logins?
+
 Nginx
 [#{nginx_run}] Running
 [#{nginx_correct_user}] Running under correct user
@@ -177,7 +191,7 @@ Firewall
 4. Sanity Checks
 [#{website_loads}] Website loads
 [ ] Content looks correct
-[#{internal_page_loads}  Subpages work
+[#{internal_page_loads}] Subpages work
 
 Details:
 REPORT
