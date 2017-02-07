@@ -162,7 +162,8 @@ cron_migrated = 'Y' if `crontab -l` =~ /custom_script.sh/
 wp_panel_login = 'Y' if `curl -L -D cookie2.txt -b cookie2.txt -d "log=admin&pwd=5lcnpgGOqO1m4j*whOcV9kKO&testcookie=1&rememberme=forever" http://blog.serverstack.com/wp-login.php|grep dashboard_activity` && $? == 0
 
 # Check e-mails copied
-emails_copied = 'Y' if File.exists?('/var/spool/imap/domain/s/serverstack.com/s/user/support/2.')
+#emails_copied = 'Y' if File.exists?('/var/spool/imap/domain/s/serverstack.com/s/user/support/2.')
+emails_copied = 'Y' if `grep "20170201202552.20DB73F3CA" /var/spool/imap/domain/s/serverstack.com/s/user/support/*\.` && $? == 0
 
 if hosts_copied == 'N'
   `echo "127.0.0.1 blog.serverstack.com" >> /etc/hosts"`
