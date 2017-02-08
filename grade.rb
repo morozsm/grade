@@ -80,6 +80,12 @@ ftp_logins = 'N'
 wp_panel_login = 'N'
 wp_supercache_works = 'N'
 
+hosts_copied = 'Y' if `grep 'blog.serverstack.com' /etc/hosts` && $? == 0
+if hosts_copied == 'N'
+  `echo "127.0.0.1 blog.serverstack.com" >> /etc/hosts`
+end
+
+
 ftp = Net::FTP.new('localhost')
 ftp_logins = 'Y' if ftp.login(ftp_login, ftp_password)
 ftp.close
@@ -106,7 +112,7 @@ if pop_can_login == 'Y' then
  end
 end
 
-if `rpm -qa| grep nagios-plugins-http` && $? == 0
+if `rpm -qa| grep nagios-plugins-http` && $? != 0
   `yum install -y -q nagios-plugins-http`
 end
 website_loads = 'Y' if `/usr/lib64/nagios/plugins/check_http -H blog.serverstack.com -I 127.0.0.1 -r 'WordPress 4\.7\.2'` =~ /HTTP OK/
@@ -153,7 +159,6 @@ mailbox_migrated = 'Y' if (`grep 'support@serverstack.com' /etc/postfix/virtual`
 user_migrated = 'Y' if `grep 'serverstack:x:500' /etc/passwd` && $? == 0
 group_migrated = 'Y' if `grep 'serverstack:x:500' /etc/group` && $? == 0
 copy_perms = 'Y' if `ls -l /home/serverstack/blog.serverstack.com/public_html/wp-config.php` =~ /-rw-r--r-- 1 apache apache/
-hosts_copied = 'Y' if `grep 'blog.serverstack.com' /etc/hosts` && $? == 0
 apache_mod_rpaf = 'Y' if `httpd -M|grep rpaf_module` =~ /rpaf_module/
 cron_migrated = 'Y' if `crontab -l` =~ /custom_script.sh/
 
@@ -164,10 +169,6 @@ wp_panel_login = 'Y' if `curl -L -D cookie2.txt -b cookie2.txt -d "log=admin&pwd
 # Check e-mails copied
 #emails_copied = 'Y' if File.exists?('/var/spool/imap/domain/s/serverstack.com/s/user/support/2.')
 emails_copied = 'Y' if `grep "20170201202552.20DB73F3CA" /var/spool/imap/domain/s/serverstack.com/s/user/support/*\.` && $? == 0
-
-if hosts_copied == 'N'
-  `echo "127.0.0.1 blog.serverstack.com" >> /etc/hosts"`
-end
 
 `php -v`.each do |phpline|
   eaccel = 'Y' if phpline =~ /eAccelerator/
