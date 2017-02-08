@@ -85,10 +85,13 @@ if hosts_copied == 'N'
   `echo "127.0.0.1 blog.serverstack.com" >> /etc/hosts`
 end
 
-
+begin
 ftp = Net::FTP.new('localhost')
 ftp_logins = 'Y' if ftp.login(ftp_login, ftp_password)
 ftp.close
+rescue
+ftp_logins = 'N'
+end
 
 begin
  pop_can_login = 'Y' if  !Net::POP3.auth_only('localhost', 110,
@@ -224,8 +227,8 @@ MySQLD
 [#{mycnf}] Copied over /root/.my.cnf
 [#{mycnf_perms}] Hardened my.cnf permissions
 
-PHP (eaccelartor)
-[#{php_config}] Verified Config
+PHP
+[#{php_config}] Installed
 
 Mail
 [#{postfix_run}] Running
