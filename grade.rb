@@ -251,7 +251,6 @@ Firewall
 [#{website_loads}] Website loads
 [#{wp_panel_login}] Wordpress Panel Login
 [#{wp_supercache_works}] WP_SuperCache plugin setup correctlty. 
-[ ] Content looks correct
 [#{internal_page_loads}] Subpages work
 
 Details:
