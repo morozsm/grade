@@ -56,7 +56,6 @@ cyrus_run = 'N'
 nrpe_run = 'N'
 snmpd_run = 'N'
 ntpd_run = 'N'
-denyhost_run = 'N'
 postfix_run = 'N'
 emails_copied = 'N'
 pop_can_login = 'N'
@@ -141,7 +140,6 @@ internal_page_loads = 'Y' if `/usr/lib64/nagios/plugins/check_http -H blog.serve
   nrpe_run = 'Y' if process =~ /nrpe/
   snmpd_run = 'Y' if process =~ /snmpd/
   ntpd_run = 'Y' if process =~ /ntpd/
-  denyhost_run = 'Y' if process =~ /denyhosts.py/
   postfix_run = 'Y' if process =~ /\/usr\/libexec\/postfix\/master/
 end
 
@@ -200,7 +198,6 @@ Migration Checklist
 [#{nrpe_run}] nrpe
 [#{snmpd_run}] snmpd
 [#{ntpd_run}] ntpd
-[#{denyhost_run}] denyhosts (python)
 
 2. Major service verification
 
